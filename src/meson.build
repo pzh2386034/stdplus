@@ -1,6 +1,6 @@
 stdplus_headers = include_directories('.')
 
-fmt_dep = dependency('fmt', required: false)
+fmt_dep = dependency('fmt', required: false, static:true)
 if not fmt_dep.found()
   fmt_opts = import('cmake').subproject_options()
   fmt_opts.add_cmake_defines({
@@ -17,7 +17,7 @@ endif
 
 # span-lite might not have a pkg-config. It is header only so just make
 # sure we can access the needed symbols from the header.
-span_dep = dependency('span-lite', required: false)
+span_dep = dependency('span-lite', required: false, static:true)
 has_span = meson.get_compiler('cpp').has_header_symbol(
   'nonstd/span.hpp',
   'nonstd::span<int>',
@@ -68,7 +68,7 @@ elif get_option('fd').enabled()
   error('File descriptor support required')
 endif
 
-io_uring_dep = dependency('liburing', required: get_option('io_uring'))
+io_uring_dep = dependency('liburing', required: get_option('io_uring'), static:true)
 has_io_uring = false
 if not get_option('io_uring').disabled() and has_fd and io_uring_dep.found()
   has_io_uring = true
@@ -88,7 +88,7 @@ elif get_option('io_uring').enabled()
   error('File descriptor support required')
 endif
 
-stdplus_lib = library(
+stdplus_lib = static_library(
   'stdplus',
   stdplus_srcs,
   include_directories: stdplus_headers,
