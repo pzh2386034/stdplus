@@ -94,7 +94,6 @@ stdplus_lib = static_library(
   include_directories: stdplus_headers,
   implicit_include_directories: false,
   dependencies: stdplus_deps,
-  version: meson.project_version(),
   install: true)
 
 stdplus_dep = declare_dependency(
